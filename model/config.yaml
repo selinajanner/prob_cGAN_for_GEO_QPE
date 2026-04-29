@@ -1,0 +1,54 @@
+data:
+  a: 0.1
+  patch_size: 128
+  prev_time: 1
+  selected_channels:
+  - TIME
+  - IR_108
+  - WV_073
+  test_month: 4
+dropout:
+  e1: 3D
+  other: overall
+  p_e1: 0.1
+  p_other: 0.1
+folder: /bg/home/janner-s/qpegermany/models/2026-04-12_16-45-51
+log:
+  project: qpegermany-3D
+  wandb: true
+model:
+  SE_decoder: false
+  SE_encoder: true
+  in_channels: 2
+  in_features_D:
+  - 32
+  - 64
+  in_features_G:
+  - 32
+  - 64
+  in_time: 2
+  out_time: 1
+  padding_mode: zeros
+norm_stats:
+  max:
+  - 3077358.0
+  - 2668624.0
+  min:
+  - 2022742.0
+  - 2043007.0
+start_time: 2026-04-12_16-45-51
+testing GER-borders:
+  max alt FSS Epoch: 110
+training:
+  AMP: true
+  batchsize: 100
+  cutoff_precip: 0.01
+  d_steps: 1
+  disc_weight: 0.01
+  epochs: 400
+  lr_D: 0.0005
+  lr_G: 0.0005
+  mse_weight: 1
+  noise_weight: 0
+  samples_per_batch: 200
+  wd_weight: 0
