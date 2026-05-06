@@ -72,6 +72,32 @@ def calc_prediction(generator,model_path,testing_loader,add_random_channel=False
         inputs.append(batch[0].detach().cpu().numpy())
     return np.concatenate(predictions, axis=0), np.concatenate(targets, axis=0), np.concatenate(inputs, axis=0)
 
+def calculate_hourly_precip(time: np.ndarray, data: np.ndarray):
+    
+    # Floor time to the hour
+    time_hour = time.astype('datetime64[h]')
+
+    # Get unique hours and group indices
+    unique_hours, inverse_indices = np.unique(time_hour, return_inverse=True)
+    n_hours = len(unique_hours)
+    H, W = data.shape[1], data.shape[2]
+    # Initialize output arrays
+    sum_maps = np.zeros((n_hours, H, W), dtype=np.float64)
+    nan_mask = np.zeros((n_hours, H, W), dtype=np.bool_)
+    count_maps = np.zeros((n_hours, 1, 1), dtype=np.int32)
+
+    # Accumulate sums and counts
+    for i in range(len(time)):
+        # check where the data is valid (not NaN)
+        nan_mask[inverse_indices[i]] += np.isnan(data[i])
+        sum_maps[inverse_indices[i]] += data[i] 
+        count_maps[inverse_indices[i]] += 1
+
+    hourly_means = sum_maps / count_maps
+    nan_mask = nan_mask>0
+    hourly_means[nan_mask] = np.nan  # Set NaN where data was invalid
+    return unique_hours, hourly_means*12 # mm/5min -> mm/h
+
 
 class ResNetBlockWithSE3D(nn.Module):
     """
