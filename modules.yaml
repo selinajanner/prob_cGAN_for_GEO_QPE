@@ -1,0 +1,17 @@
+name: cGANQPEenv
+channels:
+- conda-forge
+dependencies:
+- python=3.12
+- numpy
+- matplotlib
+- xarray
+- zarr
+- cartopy
+- tqdm
+- pyyaml
+- omegaconf
+- pytorch
+- torchinfo
+- jupyterlab
+- ipykernel
